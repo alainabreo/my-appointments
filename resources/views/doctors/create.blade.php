@@ -27,8 +27,8 @@
             </div>
             <div class="col-lg-6">
               <div class="form-group">
-                <label class="form-control-label" for="document_id">Document ID</label>
-                <input type="text" id="document_id" name="document_id" class="form-control form-control-alternative" placeholder="Document ID/DNI/Cédula" value="{{ old('document_id') }}">
+                <label class="form-control-label" for="dni">Document ID</label>
+                <input type="text" id="dni" name="dni" class="form-control form-control-alternative" placeholder="Document ID/DNI/Cédula" value="{{ old('dni') }}">
               </div>
             </div>
           </div>
@@ -82,8 +82,8 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <label class="form-control-label" for="postalcode">Postal code</label>
-                <input type="number" id="postalcode" name="postalcode" class="form-control form-control-alternative" placeholder="Postal code" value="{{ old('postalcode') }}">
+                <label class="form-control-label" for="postcode">Postal code</label>
+                <input type="number" id="postcode" name="postcode" class="form-control form-control-alternative" placeholder="Postal code" value="{{ old('postcode') }}">
               </div>
             </div>
           </div>

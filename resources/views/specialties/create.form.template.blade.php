@@ -96,8 +96,8 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <label class="form-control-label" for="postalcode">Postal code</label>
-                <input type="number" id="postalcode" name="postalcode" class="form-control form-control-alternative" placeholder="Postal code" value="{{ old('postalcode') }}">
+                <label class="form-control-label" for="postcode">Postal code</label>
+                <input type="number" id="postcode" name="postcode" class="form-control form-control-alternative" placeholder="Postal code" value="{{ old('postcode') }}">
               </div>
             </div>
           </div>

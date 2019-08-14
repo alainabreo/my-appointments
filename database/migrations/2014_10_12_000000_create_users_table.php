@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
 
             $table->string('avatar')->default('avatar.png');
-            $table->string('document_id')->nullable();
+            $table->string('dni')->nullable();
 
             $table->string('phone')->nullable();
             $table->string('mobile')->nullable();
@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
-            $table->string('postalcode')->nullable();
+            $table->string('postcode')->nullable();
 
             $table->string('role')->nullable(); //'admin', 'patient', 'doctor'
 
