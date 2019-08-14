@@ -16,3 +16,8 @@ Route::get('/specialties/{specialty}/edit', 'SpecialtyController@edit'); //Carga
 Route::post('/specialties', 'SpecialtyController@store'); //envio del form create
 Route::put('/specialties/{specialty}', 'SpecialtyController@update'); //Update form edit
 Route::delete('/specialties/{specialty}', 'SpecialtyController@destroy');
+
+//Doctors
+Route::resource('doctors', 'DoctorController');
+
+//Patients

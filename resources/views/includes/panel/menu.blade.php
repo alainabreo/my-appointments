@@ -18,17 +18,17 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="#">
+    <a class="nav-link " href="{{ url('/specialties') }}">
       <i class="ni ni-planet text-blue"></i> Specialties
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="#">
+    <a class="nav-link " href="{{ url('/doctors') }}">
       <i class="ni ni-pin-3 text-orange"></i> Doctors
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="#">
+    <a class="nav-link " href="{{ url('/patients') }}">
       <i class="ni ni-bullet-list-67 text-red"></i> Patients
     </a>
   </li>  
@@ -53,12 +53,12 @@
 <!-- Navigation -->
 <ul class="navbar-nav mb-md-3">
   <li class="nav-item">
-    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
+    <a class="nav-link" href="#">
       <i class="ni ni-palette text-red"></i> Appointments frequency
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html">
+    <a class="nav-link" href="#">
       <i class="ni ni-spaceship text-yellow"></i> Most active doctors
     </a>
   </li>

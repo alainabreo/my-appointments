@@ -5,10 +5,10 @@
 	<div class="card-header border-0">
 	  <div class="row align-items-center">
 	    <div class="col">
-	      <h3 class="mb-0">Specialties</h3>
+	      <h3 class="mb-0">Doctors</h3>
 	    </div>
 	    <div class="col text-right">
-	      <a href="{{ url('/specialties/create') }}" class="btn btn-sm btn-primary">Add New</a>
+	      <a href="{{ url('/doctors/create') }}" class="btn btn-sm btn-primary">Add New</a>
 	    </div>
 	  </div>
 	</div>
@@ -25,29 +25,33 @@
       <thead class="thead-light">
         <tr>
           <th scope="col">Name</th>
-          <th scope="col">Description</th>
+          <th scope="col">Email</th>
+          <th scope="col">DNI</th>
           <th scope="col">Options</th>
         </tr>
       </thead>
       <tbody>
-      	@foreach ($specialties as $specialty)
+      	@foreach ($doctors as $doctor)
         <tr>
           <th scope="row">
-            {{ $specialty->name }}
+            {{ $doctor->name }}
           </th>
           <td>
-            {{ $specialty->description }}
+            {{ $doctor->email }}
+          </td>
+          <td>
+            {{ $doctor->dni }}
           </td>
           <td>
           	<!-- Edit Button -->
-            <a href="{{ url('/specialties/'.$specialty->id.'/edit') }}" rel="tooltip" title="Edit" class="btn btn-success btn-icon btn-sm">
+            <a href="{{ url('/doctors/'.$doctor->id.'/edit') }}" rel="tooltip" title="Edit" class="btn btn-success btn-icon btn-sm">
             	<i class="fas fa-edit"></i>
             </a>
             <!-- Modal Delete Button -->
-				<button type="button" class="btn btn-danger btn-icon btn-sm" data-toggle="modal" data-target="#modal-notification-{{ $specialty->id }}">
+				<button type="button" class="btn btn-danger btn-icon btn-sm" data-toggle="modal" data-target="#modal-notification-{{ $doctor->id }}">
 					<i class="fas fa-times"></i>
 				</button>
-				<div class="modal fade" id="modal-notification-{{ $specialty->id }}" tabindex="-1" role="dialog" aria-labelledby="modal-notification-{{ $specialty->id }}" aria-hidden="true">
+				<div class="modal fade" id="modal-notification-{{ $doctor->id }}" tabindex="-1" role="dialog" aria-labelledby="modal-notification-{{ $doctor->id }}" aria-hidden="true">
 				<div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
 				  <div class="modal-content bg-gradient-danger">          
 				    <div class="modal-header">
@@ -59,12 +63,12 @@
 				    <div class="modal-body">
 				      <div class="py-3 text-center">
 				        <i class="ni ni-bell-55 ni-3x"></i>
-				        <h4 class="heading mt-4">Are you want to delete <strong>{{ $specialty->name }}</strong>?.</h4>
+				        <h4 class="heading mt-4">Are you want to delete <strong>{{ $doctor->name }}</strong>?.</h4>
 				        <p>Are you sure?</p>
 				      </div>
 				    </div>
 				    <div class="modal-footer">
-				      <form method="post" action="{{ url('/specialties/'.$specialty->id) }}">
+				      <form method="post" action="{{ url('/doctors/'.$doctor->id) }}">
 				        @csrf
 				        @method('DELETE')
 				        

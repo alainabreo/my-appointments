@@ -5,55 +5,41 @@
     <div class="card-header bg-white border-0">
       <div class="row align-items-center">
         <div class="col-8">
-          <h3 class="mb-0">New User</h3>
+          <h3 class="mb-0">New Doctor</h3>
         </div>
         <div class="col-4 text-right">
-          <a href="{{ url('/users') }}" class="btn btn-sm btn-primary">Cancel</a>
+          <a href="{{ url('/doctors') }}" class="btn btn-sm btn-primary">Cancel</a>
         </div>
       </div>
     </div>
     <div class="card-body">
-      <form method="POST" action="{{ url('/users') }}">
+      <form method="POST" action="{{ url('/doctors') }}">
         @csrf
 
-        <h6 class="heading-small text-muted mb-4">User information</h6>
+        <h6 class="heading-small text-muted mb-4">Doctor information</h6>
         <div class="pl-lg-4">
           <div class="row">
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label class="form-control-label" for="username">Username</label>
-                <input type="text" id="username" name="username" class="form-control form-control-alternative" placeholder="Username" value="{{ old('username') }}">
-              </div>
-            </div>
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="form-control-label" for="email">Email address</label>
                 <input type="email" id="email" name="email" class="form-control form-control-alternative" placeholder="Email address" value="{{ old('email') }}">
               </div>
             </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label class="form-control-label" for="document_id">Document ID</label>
+                <input type="text" id="document_id" name="document_id" class="form-control form-control-alternative" placeholder="Document ID/DNI/Cédula" value="{{ old('document_id') }}">
+              </div>
+            </div>
           </div>
           <div class="row">
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label class="form-control-label" for="firstname">First name</label>
-                <input type="text" id="firstname" name="firstname" class="form-control form-control-alternative" placeholder="First name" value="{{ old('firstname') }}">
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label class="form-control-label" for="lastname">Last name</label>
-                <input type="text" id="lastname" name="lastname" class="form-control form-control-alternative" placeholder="Last name" value="{{ old('lastname') }}">
-              </div>
-            </div>
-          </div>         
-          {{-- <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label class="form-control-label" for="name">Name</label>
                 <input id="name" name="name" class="form-control form-control-alternative" placeholder="Name ..." type="text" value="{{ old('name') }}" required>
               </div>
             </div> 
-          </div> --}}
+          </div>
         </div>
         <hr class="my-4" />
         <!-- Address -->
