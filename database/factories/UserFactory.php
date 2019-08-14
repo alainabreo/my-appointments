@@ -39,6 +39,8 @@ $factory->define(User::class, function (Faker $faker) {
         'role' => $faker->randomElement(['patient', 'doctor']),
 
         'aboutme' => $faker->text,
+
+        'active' => True,
         'remember_token' => Str::random(10),
     ];
 });

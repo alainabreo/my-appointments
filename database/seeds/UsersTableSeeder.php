@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'alainabreo@gmail.com',
                 'password' => bcrypt('12345678'),
                 'role' => 'admin',
+                'active' => True,
             ]);
 
         factory(User::class, 50)

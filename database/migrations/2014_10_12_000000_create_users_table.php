@@ -34,7 +34,9 @@ class CreateUsersTable extends Migration
 
             $table->string('role')->nullable(); //'admin', 'patient', 'doctor'
 
-            $table->text('aboutme')->nullable();            
+            $table->text('aboutme')->nullable();
+
+            $table->boolean('active')->default(true)->nullable();
 
             $table->rememberToken();
             $table->timestamps();
