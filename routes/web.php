@@ -8,7 +8,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin'])->namespace('Admin')->group(function () {
 	//Specialty
 	Route::get('/specialties', 'SpecialtyController@index'); //Ver form index
 	Route::get('/specialties/create', 'SpecialtyController@create'); //Ver form create

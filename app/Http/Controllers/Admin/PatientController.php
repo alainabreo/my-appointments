@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 
-class DoctorController extends Controller
+class PatientController extends Controller
 {
     public function __construct()
     {
@@ -19,9 +20,9 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        //$doctors = User::doctors()->active()->get();
-        $doctors = User::doctors()->active()->paginate(10);
-        return view('doctors.index', compact('doctors'));
+        //$/img = User::patients()->active()->get();
+        $patients = User::patients()->active()->paginate(10);
+        return view('patients.index', compact('patients'));
     }
 
     /**
@@ -31,7 +32,7 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        return view('doctors.create');
+        return view('patients.create');
     }
 
     /**
@@ -44,18 +45,18 @@ class DoctorController extends Controller
     {
         //Validar
         $this->validate($request, User::$rules, User::$messages);
-        $doctorname = $request->input('name');
+        $patientname = $request->input('name');
 
         User::create(
             $request->only('name', 'email', 'dni', 'mobile', 'phone', 'address', 'city', 'country', 'postcode', 'aboutme') 
             + [
-                'role' => 'doctor',
+                'role' => 'patient',
                 'password' => bcrypt($request->input('password'))
             ]
         );
 
-        $notification = $doctorname . ' was registered correctly.';
-        return redirect('/doctors')->with(compact('notification'));
+        $notification = $patientname . ' was registered correctly.';
+        return redirect('/patients')->with(compact('notification'));
     }
 
     /**
@@ -77,8 +78,8 @@ class DoctorController extends Controller
      */
     public function edit($id)
     {
-        $doctor = User::doctors()->active()->findOrFail($id);
-        return view('doctors.edit', compact('doctor'));
+        $patient = User::patients()->active()->findOrFail($id);
+        return view('patients.edit', compact('patient'));
     }
 
     /**
@@ -92,20 +93,20 @@ class DoctorController extends Controller
     {
         //Validar
         $this->validate($request, User::$rules, User::$messages);
-        $doctorname = $request->input('name');
+        $patientname = $request->input('name');
         
-        $doctor = User::doctors()->active()->findOrFail($id);
+        $patient = User::patients()->active()->findOrFail($id);
 
         $data = $request->only('name', 'email', 'dni', 'mobile', 'phone', 'address', 'city', 'country', 'postcode', 'aboutme');
         $password = $request->input('password');
         if ($password)
             $data['password'] = bcrypt($password);
 
-        $doctor->fill($data);
-        $doctor->save();
+        $patient->fill($data);
+        $patient->save();
 
-        $notification = $doctorname . ' was updated correctly.';
-        return redirect('/doctors')->with(compact('notification'));
+        $notification = $patientname . ' was updated correctly.';
+        return redirect('/patients')->with(compact('notification'));
     }
 
     /**
@@ -114,12 +115,12 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $doctor)
+    public function destroy(User $patient)
     {
-        $doctorname = $doctor->name;
-        $doctor->delete();
+        $patientname = $patient->name;
+        $patient->delete();
 
-        $notification = $doctorname . ' was deleted correctly.';
-        return redirect('/doctors')->with(compact('notification'));        
+        $notification = $patientname . ' was deleted correctly.';
+        return redirect('/patients')->with(compact('notification'));        
     }
 }
