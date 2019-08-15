@@ -2,16 +2,17 @@
 
 @section('content')
   <div class="card bg-secondary shadow">
-    <form method="POST" action="{{ url('/doctors') }}">
+    <form method="POST" action="{{ url('/doctors/'.$doctor->id) }}">
       @csrf
+      @method('PUT')
 
       <div class="card-header bg-white border-0">
         <div class="row align-items-center">
           <div class="col-8">
-            <h3 class="mb-0">New Doctor</h3>
+            <h3 class="mb-0">Edit Doctor</h3>
           </div>
           <div class="col-4 text-right">
-            <button type="submit" class="btn btn-sm btn-primary">Save</button>            
+            <button type="submit" class="btn btn-sm btn-primary">Save</button>
             <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">Cancel</a>
           </div>
         </div>
@@ -23,7 +24,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="form-control-label" for="name">Name</label>
-                <input id="name" name="name" class="form-control form-control-alternative" placeholder="Name ..." type="text" value="{{ old('name') }}" required>
+                <input id="name" name="name" class="form-control form-control-alternative" placeholder="Name ..." type="text" value="{{ old('name', $doctor->name) }}" required>
               </div>
             </div> 
           </div>          
@@ -31,19 +32,19 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="form-control-label" for="email">Email address</label>
-                <input type="email" id="email" name="email" class="form-control form-control-alternative" placeholder="Email address" value="{{ old('email') }}">
+                <input type="email" id="email" name="email" class="form-control form-control-alternative" placeholder="Email address" value="{{ old('email', $doctor->email) }}">
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="form-control-label" for="password">Password</label>
-                <input type="text" id="password" name="password" class="form-control form-control-alternative" placeholder="Password" value="{{ str_random(8) }}">
+                <input type="password" id="password" name="password" class="form-control form-control-alternative" placeholder="Enter password only if you wish to change" value="">
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="form-control-label" for="dni">Document ID</label>
-                <input type="text" id="dni" name="dni" class="form-control form-control-alternative" placeholder="Document ID/DNI/Cédula" value="{{ old('dni') }}">
+                <input type="text" id="dni" name="dni" class="form-control form-control-alternative" placeholder="Document ID/DNI/Cédula" value="{{ old('dni', $doctor->dni) }}">
               </div>
             </div>
           </div>
@@ -56,13 +57,13 @@
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="form-control-label" for="mobile">Mobile</label>
-                <input type="text" id="mobile" name="mobile" class="form-control form-control-alternative" placeholder="Mobile" value="{{ old('mobile') }}">
+                <input type="text" id="mobile" name="mobile" class="form-control form-control-alternative" placeholder="Mobile" value="{{ old('mobile', $doctor->mobile) }}">
               </div>
             </div>            
             <div class="col-lg-6">
               <div class="form-group">
                 <label class="form-control-label" for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" class="form-control form-control-alternative" placeholder="Phone" value="{{ old('phone') }}">
+                <input type="text" id="phone" name="phone" class="form-control form-control-alternative" placeholder="Phone" value="{{ old('phone', $doctor->phone) }}">
               </div>
             </div>
           </div>           
@@ -70,7 +71,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="form-control-label" for="address">Address</label>
-                <input id="address" name="address" class="form-control form-control-alternative" placeholder="Home Address" value="{{ old('address') }}" type="text">
+                <input id="address" name="address" class="form-control form-control-alternative" placeholder="Home Address" value="{{ old('address', $doctor->address) }}" type="text">
               </div>
             </div>
           </div>
@@ -78,19 +79,19 @@
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="form-control-label" for="city">City</label>
-                <input type="text" id="city" name="city" class="form-control form-control-alternative" placeholder="City" value="{{ old('city') }}">
+                <input type="text" id="city" name="city" class="form-control form-control-alternative" placeholder="City" value="{{ old('city', $doctor->city) }}">
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="form-control-label" for="country">Country</label>
-                <input type="text" id="country" name="country" class="form-control form-control-alternative" placeholder="Country" value="{{ old('country') }}">
+                <input type="text" id="country" name="country" class="form-control form-control-alternative" placeholder="Country" value="{{ old('country', $doctor->country) }}">
               </div>
             </div>
             <div class="col-lg-4">
               <div class="form-group">
                 <label class="form-control-label" for="postcode">Postal code</label>
-                <input type="number" id="postcode" name="postcode" class="form-control form-control-alternative" placeholder="Postal code" value="{{ old('postcode') }}">
+                <input type="number" id="postcode" name="postcode" class="form-control form-control-alternative" placeholder="Postal code" value="{{ old('postcode', $doctor->postcode) }}">
               </div>
             </div>
           </div>
@@ -101,7 +102,7 @@
         <div class="pl-lg-4">
           <div class="form-group">
             <label class="form-control-label" for="aboutme">About Me</label>
-            <textarea rows="4" id="aboutme" name="aboutme" class="form-control form-control-alternative" placeholder="A few words about you ...">{{ old('aboutme') }}</textarea>
+            <textarea rows="4" id="aboutme" name="aboutme" class="form-control form-control-alternative" placeholder="A few words about you ...">{{ old('aboutme', $doctor->aboutme) }}</textarea>
           </div>
         </div>        
         <div class="pl-lg-4 text-left">

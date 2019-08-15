@@ -15,7 +15,7 @@ class Specialty extends Model
     public static $rules = [
         'name' => 'required|min:3',
         'description' => 'required|max:200'
-    ];	
+    ];
 
 	protected $fillable = ['name', 'description', 'long_description'];
 
