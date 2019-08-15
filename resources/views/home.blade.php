@@ -7,6 +7,13 @@
             <div class="card-header">Dashboard</div>
 
             <div class="card-body">
+                @if (session('forbidden'))
+                  <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                      <strong>Error  !</strong> {{ session('forbidden') }}
+                    </div>
+                  </div>
+                @endif              
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
