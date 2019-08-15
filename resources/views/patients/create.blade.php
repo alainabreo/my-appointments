@@ -49,7 +49,7 @@
           </div>
         </div>
         <hr class="my-4" />
-        <!-- Address -->
+        {{-- Address --}}
         <h6 class="heading-small text-muted mb-4">Contact information</h6>
         <div class="pl-lg-4">         
           <div class="row">
@@ -96,7 +96,7 @@
           </div>
         </div>
         <hr class="my-4" />
-        <!-- Description -->
+        {{-- Description --}}
         <h6 class="heading-small text-muted mb-4">About me</h6>
         <div class="pl-lg-4">
           <div class="form-group">

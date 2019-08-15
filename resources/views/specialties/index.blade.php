@@ -20,7 +20,7 @@
 		</div>
 	@endif
 	<div class="table-responsive">
-    <!-- Projects table -->
+    {{-- Projects table --}}
     <table class="table align-items-center table-flush">
       <thead class="thead-light">
         <tr>
@@ -39,11 +39,11 @@
             {{ $specialty->description }}
           </td>
           <td>
-          	<!-- Edit Button -->
+          	{{-- Edit Button --}}
             <a href="{{ url('/specialties/'.$specialty->id.'/edit') }}" rel="tooltip" title="Edit" class="btn btn-success btn-icon btn-sm">
             	<i class="fas fa-edit"></i>
             </a>
-            <!-- Modal Delete Button -->
+            {{-- Modal Delete Button --}}
 				<button type="button" class="btn btn-danger btn-icon btn-sm" data-toggle="modal" data-target="#modal-notification-{{ $specialty->id }}">
 					<i class="fas fa-times"></i>
 				</button>
@@ -75,7 +75,7 @@
 				  </div>
 				</div>
 				</div>
-			<!-- End Modal Delete Button -->
+			{{-- End Modal Delete Button --}}
           </td>
         </tr>
         @endforeach
