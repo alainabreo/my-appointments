@@ -4,10 +4,24 @@ namespace App\Http\Controllers\Doctor;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Workday;
+use App\WorkDay;
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class ScheduleController extends Controller
 {
+    private $days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -37,6 +51,9 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+
+        //DB::beginTransaction();
+
         $active = $request->input('active') ?: [];
         //si no hay active en el request asigna un arreglo vacío
         $morning_start = $request->input('morning_start');
@@ -44,7 +61,18 @@ class ScheduleController extends Controller
         $afternoon_start = $request->input('afternoon_start');
         $afternoon_end = $request->input('afternoon_end');
 
-        for ($i=0; $i<7; ++$i)
+        $errors = [];
+
+        for ($i=0; $i<7; ++$i) {
+            //$day = (string)$days[$i];
+
+            if ($morning_start[$i] > $morning_end[$i]) {
+                $errors[] = 'The morning shift hours are inconsistent for day ' . $this->days[$i] . '';
+            }
+            if ($afternoon_start[$i] > $afternoon_end[$i]) {
+                $errors[] = 'The afternoon shift hours are inconsistent for day ' . $this->days[$i] . '';
+            }
+
             WorkDay::updateOrCreate(
                 [
                     'day' => $i,
@@ -54,11 +82,21 @@ class ScheduleController extends Controller
                     'morning_start' => $morning_start[$i],
                     'morning_end' => $morning_end[$i],
                     'afternoon_start' => $afternoon_start[$i],
-                    'afternoon_end' => $afternoon_end[$i],
+                    'afternoon_end' => $afternoon_end[$i]
                 ]
             );
+        }
 
-        return back();
+        //dd($errors);
+
+        if (count($errors) > 0) {
+            //DB::rollBack();
+            return back()->with(compact('errors'));
+        }
+
+        $notification = "The schedule has been saved correctly.";
+        //DB::commit();
+        return back()->with(compact('notification'));
     }
 
     /**
@@ -80,16 +118,20 @@ class ScheduleController extends Controller
      */
     public function edit()
     {
-        $days = [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday'
-        ];
-        return view('schedule', compact('days'));
+        $workDays = WorkDay::where('user_id', auth()->id())->get();
+        
+        $workDays->map(function ($workDay) {
+            $workDay->morning_start = (new Carbon($workDay->morning_start))->format('g:i A');
+            $workDay->morning_end = (new Carbon($workDay->morning_end))->format('g:i A');
+            $workDay->afternoon_start = (new Carbon($workDay->afternoon_start))->format('g:i A');
+            $workDay->afternoon_end = (new Carbon($workDay->afternoon_end))->format('g:i A');
+            return $workDay;
+        });
+
+        //dd($workDays);
+        //dd($workDays->toArray());
+        $days = $this->days;
+        return view('schedule', compact('workDays', 'days'));
     }
 
     /**
