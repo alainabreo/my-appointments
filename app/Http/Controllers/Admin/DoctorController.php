@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\Specialty;
 
 class DoctorController extends Controller
 {
@@ -32,7 +33,8 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        return view('doctors.create');
+        $specialties = Specialty::all();
+        return view('doctors.create', compact('specialties'));
     }
 
     /**
@@ -43,17 +45,22 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         //Validar
         $this->validate($request, User::$rules, User::$messages);
         $doctorname = $request->input('name');
 
-        User::create(
+        $user = User::create(
             $request->only('name', 'email', 'dni', 'mobile', 'phone', 'address', 'city', 'country', 'postcode', 'aboutme') 
             + [
                 'role' => 'doctor',
                 'password' => bcrypt($request->input('password'))
             ]
         );
+
+        //Crea especialidades en tabla intermedia
+        //Relacion N to N        
+        $user->specialties()->attach($request->input('specialties'));
 
         $notification = $doctorname . ' was registered correctly.';
         return redirect('/doctors')->with(compact('notification'));
@@ -79,7 +86,9 @@ class DoctorController extends Controller
     public function edit($id)
     {
         $doctor = User::doctors()->active()->findOrFail($id);
-        return view('doctors.edit', compact('doctor'));
+        $specialties = Specialty::all();
+        $specialty_ids = $doctor->specialties()->pluck('specialties.id');
+        return view('doctors.edit', compact('doctor', 'specialties', 'specialty_ids'));
     }
 
     /**
@@ -104,6 +113,10 @@ class DoctorController extends Controller
 
         $doctor->fill($data);
         $doctor->save();
+
+        //Sincroniza especialidades en tabla intermedia
+        //Relacion N to N
+        $doctor->specialties()->sync($request->input('specialties'));
 
         $notification = $doctorname . ' was updated correctly.';
         return redirect('/doctors')->with(compact('notification'));

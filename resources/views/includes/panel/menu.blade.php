@@ -61,7 +61,7 @@
   @elseif (auth()->user()->role == 'patient')
     {{-- End Menú patient --}}
       <li class="nav-item active">
-        <a class=" nav-link active " href="{{ url('/home') }}">
+        <a class=" nav-link active " href="{{ url('/appointments/create') }}">
           <i class="ni ni-square-pin text-danger"></i> Book appointment
         </a>
       </li>
