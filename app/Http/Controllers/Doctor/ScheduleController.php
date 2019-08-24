@@ -119,19 +119,88 @@ class ScheduleController extends Controller
     public function edit()
     {
         $workDays = WorkDay::where('user_id', auth()->id())->get();
-        
-        $workDays->map(function ($workDay) {
-            $workDay->morning_start = (new Carbon($workDay->morning_start))->format('g:i A');
-            $workDay->morning_end = (new Carbon($workDay->morning_end))->format('g:i A');
-            $workDay->afternoon_start = (new Carbon($workDay->afternoon_start))->format('g:i A');
-            $workDay->afternoon_end = (new Carbon($workDay->afternoon_end))->format('g:i A');
-            return $workDay;
-        });
+
+        if (count($workDays) > 0) {
+            //Horario existe en DB
+            $workDays->map(function ($workDay) {
+                $workDay->morning_start = (new Carbon($workDay->morning_start))->format('H:i');
+                $workDay->morning_end = (new Carbon($workDay->morning_end))->format('H:i');
+                $workDay->afternoon_start = (new Carbon($workDay->afternoon_start))->format('H:i');
+                $workDay->afternoon_end = (new Carbon($workDay->afternoon_end))->format('H:i');
+                return $workDay;
+            });
+        } else {
+            //Genera horario plantilla
+            $workDays = collect();
+            for ($i=0; $i<7 ; ++$i) { 
+                $workDays->push(new WorkDay([
+                    'active' => false,
+                    'morning_start' => (new Carbon((($i>0 and $i<6) ? '8' : '9').':00'))->format('H:i'),
+                    'morning_end' => (new Carbon('12:00'))->format('H:i'),
+                    'afternoon_start' => (new Carbon('14:00'))->format('H:i'),
+                    'afternoon_end' => (new Carbon((($i>0 and $i<6) ? '18' : '16').':00'))->format('H:i'),
+                ]));
+            }
+        }
 
         //dd($workDays);
         //dd($workDays->toArray());
+
+        $amHours = $this->getIntervals(0, 0, 12, 0, 30, 0);
+        $pmHours = $this->getIntervals(12, 0, 24, 0, 30, 0);
+
+        //dd($amHours);
+        //dd($pmHours);
+
         $days = $this->days;
-        return view('schedule', compact('workDays', 'days'));
+        return view('schedule', compact('workDays', 'days', 'amHours', 'pmHours'));
+    }
+
+    /**
+     * Genera arreglo de Horas según startMinintervalo.
+     *
+     * @startHour, hora de inicio
+     * @startMin, minuto de inicio
+     * @endHour, hora de fin
+     * @endMin, minuto de fin
+     * @intervalMins, duración cada cita
+     * @breakMins, minutos de break entre citas
+     * @return Arreglo con todo el rango de horas     
+     */
+    private function getIntervals($startHour, $startMin, $endHour, $endMin, $intervalMins, $breakMins)
+    {
+        $Hours = [];
+        $startTime = new Carbon($startHour.':'.$startMin);
+        $endTime = new Carbon($endHour.':'.$endMin);
+        $newHour = $startTime;
+        while ($startTime<=$endTime) {
+            $Hours [] = $this->arrayHour(
+                            $newHour->hour,
+                            ':'.($newHour->minute == 0 ? '00' : $newHour->minute)
+                        );        
+            $newHour->addMinutes($intervalMins);
+            $newHour->addMinutes($breakMins);
+        }
+        return $Hours;
+    }    
+
+    /**
+     * Genera arreglo de Horas en formato 12 y 24 hr
+     *
+     * @hour, hora
+     * @min, minuto
+     * @return arreglo con los dos formatos     
+     */
+    private function arrayHour($hour, $min)
+    {
+        $hours = [];
+        $hourCarbon = new Carbon($hour.$min);
+
+        $zero = (($hour >= 1 and  $hour < 10) or ($hour >= 13 and  $hour < 22)) ? '0' : '';
+        $hours['format_12'] = $zero.$hourCarbon->format('g:i A');
+        $hours['format_24'] = $hourCarbon->format('H:i');
+
+        return $hours;
     }
 
     /**
