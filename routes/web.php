@@ -17,20 +17,20 @@ Route::middleware(['auth', 'admin'])->namespace('Admin')->group(function () {
 	Route::put('/specialties/{specialty}', 'SpecialtyController@update'); //Update form edit
 	Route::delete('/specialties/{specialty}', 'SpecialtyController@destroy');
 	//Doctors
-	Route::resource('doctors', 'DoctorController');
+	Route::resource('doctors', 'DoctorController'); //Doctor routes
 	//Patients
-	Route::resource('patients', 'PatientController');
+	Route::resource('patients', 'PatientController'); //Patient routes
 });
 
 Route::middleware(['auth', 'doctor'])->namespace('Doctor')->group(function () {
 	//Schedule
-	Route::get('/schedule', 'ScheduleController@edit');
-	Route::post('/schedule', 'ScheduleController@store');
+	Route::get('/schedule', 'ScheduleController@edit'); //Edit Doctor Schedule
+	Route::post('/schedule', 'ScheduleController@store'); //Store Doctor Schedule
 });
 
 Route::middleware(['auth'])->group(function () {
-	Route::get('/appointments/create', 'AppointmentController@create');
-	Route::post('/appointments', 'AppointmentController@store');
+	Route::get('/appointments/create', 'AppointmentController@create'); //Create Appointment
+	Route::post('/appointments', 'AppointmentController@store'); //Store Appointment
 
 	//JSON
 	Route::get('/specialties/{specialty}/doctors', 'Api\SpecialtyController@doctors'); //Doctors by Specialty

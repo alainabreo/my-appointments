@@ -104,6 +104,16 @@
               	<label class="form-control-label" for="hours">Hours</label>
                 <select id="hours" name="scheduled_time" class="form-control form-control-alternative" required>
 
+					{{-- Si hay valores Old para horas, vienen desde el controlador --}}
+					@if($intervals)
+                	@foreach ($intervals['am'] as $interval)
+                		<option value="{{ $interval['start'] }}" @if(old('scheduled_time') == $interval['start']) selected @endif>{{ $interval['start'] }} - {{ $interval['end'] }}</option>
+                	@endforeach
+                	@foreach ($intervals['pm'] as $interval)
+                		<option value="{{ $interval['start'] }}" @if(old('scheduled_time') == $interval['start']) selected @endif>{{ $interval['start'] }} - {{ $interval['end'] }}</option>
+                	@endforeach                	
+                	@endif
+
                 </select>
                 {{-- End For Select --}}
                 {{-- For Radio Buttons --}}

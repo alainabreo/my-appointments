@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Doctor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\WorkDay;
+use App\User;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
@@ -145,9 +146,19 @@ class ScheduleController extends Controller
 
         //dd($workDays);
         //dd($workDays->toArray());
+        $doctor = User::where('active', True)
+                ->where('id', auth()->id())
+                ->first(['interval']);
+        $intervalMins = $doctor->interval;
 
-        $amHours = $this->getIntervals(0, 0, 12, 0, 30, 0);
-        $pmHours = $this->getIntervals(12, 0, 24, 0, 30, 0);
+        //dd($intervalMins);
+
+        if (!$intervalMins) {
+            $intervalMins = env('DOCTOR_DEFAULT_INTERVAL', 30);
+        }        
+
+        $amHours = $this->getIntervals(0, 0, 12, 0, $intervalMins, 0);
+        $pmHours = $this->getIntervals(12, 0, 24, 0, $intervalMins, 0);
 
         //dd($amHours);
         //dd($pmHours);

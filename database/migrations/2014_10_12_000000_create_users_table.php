@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('postcode')->nullable();
 
             $table->string('role')->nullable(); //'admin', 'patient', 'doctor'
+            $table->unsignedInteger('interval')->nullable(); //Date doctors, 15,20,30,45,60 mins
 
             $table->text('aboutme')->nullable();
 

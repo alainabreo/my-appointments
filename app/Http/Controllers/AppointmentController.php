@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 
 use App\Specialty;
 use App\Appointment;
+use App\User;
+
+use App\Interfaces\ScheduleServiceInterface;
 
 use Carbon\Carbon;
 
+use Illuminate\Support\Facades\Validator;
+
 class AppointmentController extends Controller
 {
-    public function create()
+    public function create(ScheduleServiceInterface $scheduleService)
     {
     	$specialties = Specialty::all();
 
@@ -24,10 +29,29 @@ class AppointmentController extends Controller
     		$doctors = collect();
     	}
 
-    	return view('appointments.create', compact('specialties', 'doctors'));
+    	$date = old('scheduled_date');
+    	$doctorId = old('doctor_id');
+
+    	if ($date && $doctorId) {
+    		    		
+	        $doctor = User::where('active', True)
+	                ->where('id', $doctorId)
+	                ->first(['interval']);
+	        $intervalMins = $doctor->interval;
+
+			if (!$intervalMins) {
+				$intervalMins = env('DOCTOR_DEFAULT_INTERVAL', 30);
+			}
+
+    		$intervals = $scheduleService->getAvailableIntervals($date, $doctorId, $intervalMins);
+    	} else {
+    		$intervals = null;
+    	}
+    	
+    	return view('appointments.create', compact('specialties', 'doctors', 'intervals'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, ScheduleServiceInterface $scheduleService)
     {
     	//dd($request->all());
 
@@ -49,7 +73,34 @@ class AppointmentController extends Controller
     		'description.required' => 'Please select a valid description'
     	];
 
-    	$this->validate($request, $rules, $messages);
+    	// Validator Block
+    	//$this->validate($request, $rules, $messages);
+
+    	$validator = Validator::make($request->all(), $rules, $messages);
+
+		$validator->after(function ($validator) use ($request, $scheduleService) {
+			$date = $request->input('scheduled_date');
+			$doctorId = $request->input('doctor_id');
+			$scheduled_time = $request->input('scheduled_time');
+
+			if ($date && $doctorId && $scheduled_time) {
+				$start = new Carbon($scheduled_time);
+			} else {
+				return;
+			}
+
+		    if (!$scheduleService->isAvailableInterval($date, $doctorId, $start)) {
+		        $validator->errors()
+		        	->add('scheduled_time', 'Selected time is not available!, please select other hour');
+		    }
+		});
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        // End Validator Block
 
     	$data = $request->only([
 	        'specialty_id',
@@ -72,4 +123,5 @@ class AppointmentController extends Controller
     	return back()->with(compact('notification'));
     	//return redirect('/appointments');
     }
+
 }

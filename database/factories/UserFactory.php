@@ -50,5 +50,6 @@ $factory->state(App\User::class, 'patient', [
 ]);
 
 $factory->state(App\User::class, 'doctor', [
-    'role' => 'doctor'
+    'role' => 'doctor',
+    'interval' => 30
 ]);

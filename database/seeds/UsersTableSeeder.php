@@ -25,6 +25,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'bayonacatalina@hotmail.com',
                 'password' => bcrypt('123456'),
                 'role' => 'doctor',
+                'interval' => 30,
                 'active' => True,
             ]);
 
@@ -33,6 +34,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'nicolasabreo@gmail.com',
                 'password' => bcrypt('123456'),
                 'role' => 'doctor',
+                'interval' => 20,
                 'active' => True,
             ]);
 
