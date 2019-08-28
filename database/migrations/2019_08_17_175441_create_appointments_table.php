@@ -33,7 +33,14 @@ class CreateAppointmentsTable extends Migration
 
             $table->string('type');
 
+            //Reserved, Confirmed, Attended, Canceled
+            //$table->string('status')->default('Reserved');
+            //Se creó en migración adicional
+
             $table->text('description');
+
+            //Control a nivel de BD no citas duplicadas
+            //$table->unique(['doctor_id', 'scheduled_date', 'scheduled_time']);
 
             $table->timestamps();
         });

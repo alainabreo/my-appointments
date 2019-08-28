@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Specialty;
 use App\Appointment;
 use App\User;
+use App\CancelledAppointment;
 
 use App\Interfaces\ScheduleServiceInterface;
 
@@ -16,6 +17,26 @@ use Illuminate\Support\Facades\Validator;
 
 class AppointmentController extends Controller
 {
+    public function index()
+    {
+
+        $pendingAppointments = Appointment::where('status', 'Reserved')
+                ->where('patient_id', auth()->id())
+                ->paginate(10);
+        $confirmedAppointments = Appointment::where('status', 'Confirmed')
+                ->where('patient_id', auth()->id())
+                ->paginate(10);
+        $oldAppointments = Appointment::whereIn('status', ['Attended', 'Canceled'])
+                ->where('patient_id', auth()->id())
+                ->paginate(10);
+
+        //$appointments = Appointment::where('patient_id', auth()->id())->paginate(10);
+
+        return view('appointments.index', 
+            compact('pendingAppointments', 'confirmedAppointments', 'oldAppointments')
+        );
+    }
+
     public function create(ScheduleServiceInterface $scheduleService)
     {
     	$specialties = Specialty::all();
@@ -122,6 +143,26 @@ class AppointmentController extends Controller
     	$notification = 'The appointment has been successfully registered';
     	return back()->with(compact('notification'));
     	//return redirect('/appointments');
+    }
+
+    public function cancel(Appointment $appointment, Request $request)
+    {
+        if ($request->has('justification')) {
+            $cancellation = new CancelledAppointment();
+            $cancellation->justification = $request->input('justification');
+            $cancellation->cancelled_by = auth()->id();
+            //$cancellation->appointment_id = ;
+            //$cancellation->save();
+
+            //$appointment->cancellation() Accede a la relación entre los modelos
+            $appointment->cancellation()->save($cancellation);
+        }
+
+        $appointment->status = 'Canceled';
+        $appointment->save();
+
+        $notification = 'The appointment has been canceled successfully';
+        return back()->with(compact('notification'));
     }
 
 }
