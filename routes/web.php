@@ -31,7 +31,9 @@ Route::middleware(['auth', 'doctor'])->namespace('Doctor')->group(function () {
 Route::middleware(['auth'])->group(function () {
 	Route::get('/appointments/create', 'AppointmentController@create'); //Create Appointment
 	Route::post('/appointments', 'AppointmentController@store'); //Store Appointment
+
 	Route::get('/appointments', 'AppointmentController@index'); //View Appointments
+	Route::get('/appointments/{appointment}', 'AppointmentController@show'); //Appointments Detail
 	Route::post('/appointments/{appointment}/cancel', 'AppointmentController@cancel'); //Cancel Appointment	
 
 	//JSON

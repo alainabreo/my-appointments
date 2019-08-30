@@ -27,21 +27,21 @@ class Appointment extends Model
     // ];
 
     // N $appoinment->specialty 1
-    public function specialty()
+    public function specialty() //specialty_id
     {
     	return $this->belongsTo(Specialty::class);
     }
 
     // N $appoinment->doctor 1
     // Laravel busca el campo doctor_id
-    public function doctor()
+    public function doctor() //doctor_id
     {
     	return $this->belongsTo(User::class);
     }
 
     // N $appoinment->patient 1
 	// Laravel busca el campo patient_id    
-    public function patient()
+    public function patient() //patient_id
     {
     	return $this->belongsTo(User::class);
     }

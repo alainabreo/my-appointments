@@ -38,6 +38,10 @@
 		        {{ $appointment->status }}
 		      </td>
 		      <td>
+		      	{{-- Show Button --}}
+		        <a href="{{ url('/appointments/'.$appointment->id) }}" rel="tooltip" title="Show" class="btn btn-info btn-icon btn-sm">
+		        	<i class="fas fa-edit"></i>
+		        </a>
 		      	{{-- Confirm Button --}}
 		        {{-- <a href="{{ url('/appointments/'.$appointment->id.'/confirm') }}" rel="tooltip" title="Confirm" class="btn btn-success btn-icon btn-sm">
 		        	<i class="fas fa-check"></i>
